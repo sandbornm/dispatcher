@@ -1,0 +1,34 @@
+---
+
+- name: include environment-specific variables
+  include_vars:
+      dir: vars/
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: install package dependencies
+  sudo: yes
+  apt:
+      name: "{{ cuckoo_req  }}"
+      state: present
+      update_cache: yes
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+- name: install required pip packages
+  become: true
+  become_user: "{{ cuckoo_user  }}"
+  include: pip_pkgs.yml
+
+- name: install virtualbox if defined in deafults config
+  include: vbox.yml
+  when: use_vbox|bool
+
+
+  #- name: install volatility for memory forensics
+  #  include: volatility.yml
+  #  when: enable_volatility|bool
+
+
+- debug:
+  var: pkg_status
+

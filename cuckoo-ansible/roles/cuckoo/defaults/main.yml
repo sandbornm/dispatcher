@@ -1,0 +1,5 @@
+use_vbox: true
+enable_volatility: true
+cuckoo_user: ubuntu
+download_dir: ~/Downloads/
+cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv

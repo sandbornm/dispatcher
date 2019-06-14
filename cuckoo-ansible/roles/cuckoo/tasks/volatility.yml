@@ -1,0 +1,10 @@
+---
+
+- name: clone volatility HEAD branch on the disk
+  git:
+    repo: https://github.com/volatilityfoundation/volatility.git
+    dest: {{ download_dir }}/volatility
+    version: HEAD
+
+- name: install volatility in cuckoo dedicated virtualenv
+

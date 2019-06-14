@@ -1,0 +1,18 @@
+---
+
+- name: add repo to sources.list apt
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian {{ ansible_lsb.codename  }} contrib
+    state: present
+    update_cache: yes
+    filename: virtualbox
+
+- name: install vbox using apt
+  sudo: yes
+  package:
+      name: virtualbox
+      state: present
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+

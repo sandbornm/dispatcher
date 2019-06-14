@@ -1,0 +1,26 @@
+---
+
+- name: pip | install python package dependencies
+  pip:
+      name: "{{ item }}"
+      state: present
+      virtualenv: "{{ cuckoo_virtenv }}"
+      virtualenv_command: virtualenv
+      virtualenv_python: python2.7
+  with_items:
+    - pip
+    - setuptools
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+- name: pip | install cuckoo sandbox inside virtualenv
+  pip:
+      name: cuckoo
+      state: present
+      virtualenv: "{{ cuckoo_virtenv }}"
+      virtualenv_command: virtualenv
+      virtualenv_python: python2.7
+  register: result
+
+- debug:
+    vars: result
