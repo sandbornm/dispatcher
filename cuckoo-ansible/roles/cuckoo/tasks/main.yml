@@ -23,12 +23,13 @@
   include: vbox.yml
   when: use_vbox|bool
 
+- name: install volatility for memory forensics
+  become: true
+  become_user: "{{ cuckoo_user  }}"
+  include: volatility.yml
+  when: enable_volatility|bool
 
-  #- name: install volatility for memory forensics
-  #  include: volatility.yml
-  #  when: enable_volatility|bool
-
-
-- debug:
-  var: pkg_status
+- name: configure tcpdump
+  become: true
+  include: tcpdump.yml
 

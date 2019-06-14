@@ -1,0 +1,13 @@
+---
+
+- name: bash | configure tcpdump cuz we don't wanna give cuckoo root user!
+  become: true
+  shell: |
+    groupadd {{ pcap_group }}
+    usermod -aG {{ pcap_group }} {{ cuckoo_user }}
+    chgrp {{ pcap_group }} /usr/sbin/tcpdump
+    setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+  args:
+    executable: /bin/bash
+  register: result
+  failed_when: result is failed

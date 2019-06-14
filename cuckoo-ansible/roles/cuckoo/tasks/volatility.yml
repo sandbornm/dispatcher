@@ -1,10 +1,16 @@
 ---
 
-- name: clone volatility HEAD branch on the disk
+- name: git | clone volatility HEAD branch on the disk
   git:
     repo: https://github.com/volatilityfoundation/volatility.git
-    dest: {{ download_dir }}/volatility
+    dest: "{{ download_dir }}/volatility"
     version: HEAD
 
-- name: install volatility in cuckoo dedicated virtualenv
-
+- name: setuptools | install volatility in cuckoo dedicated virtualenv
+  shell: |
+    source {{ cuckoo_virtenv }}/bin/activate
+    python setup.py build
+    python setup.py install
+  args:
+      chdir: "{{ download_dir }}/volatility"
+      executable: /bin/bash

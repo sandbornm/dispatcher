@@ -14,6 +14,6 @@ Please change the following parameters for the remote-server you want to install
 ---
 ## TODO List 
 - [x] Installing cuckoo pip under virtualenv 
-- [ ] Installing volatility plugin and profiles for memory forensics 
+- [x] Installing volatility plugin and profiles for memory forensics 
 - [ ] Configuring VBox environment for cuckoo user 
-- [ ] Configuring tcpdump to use CAPs 
+- [x] Configuring tcpdump to use CAPs 

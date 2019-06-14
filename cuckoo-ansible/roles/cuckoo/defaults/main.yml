@@ -3,3 +3,5 @@ enable_volatility: true
 cuckoo_user: ubuntu
 download_dir: ~/Downloads/
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
+pcap_group: pcap
+cuckoo_cwd: ~/.cuckoo

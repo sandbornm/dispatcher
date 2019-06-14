@@ -14,9 +14,16 @@ cuckoo_req:
     - libjpeg-dev
     - zlib1g-dev
     - swig
+    - git
     - tcpdump
     - libcap2-bin
     - libyara-dev
+
+pip_pkg:
+    - pip
+    - setuptools
+    - distorm3
+    - yara-python
 
 cuckoo_kvm:
     - qemu-kvm

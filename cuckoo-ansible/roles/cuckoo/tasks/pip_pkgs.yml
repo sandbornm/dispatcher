@@ -2,14 +2,11 @@
 
 - name: pip | install python package dependencies
   pip:
-      name: "{{ item }}"
+      name: "{{ pip_pkg }}"
       state: present
       virtualenv: "{{ cuckoo_virtenv }}"
       virtualenv_command: virtualenv
       virtualenv_python: python2.7
-  with_items:
-    - pip
-    - setuptools
   register: pkg_status
   failed_when: pkg_status is failed
 
@@ -21,6 +18,11 @@
       virtualenv_command: virtualenv
       virtualenv_python: python2.7
   register: result
+  failed_when: pkg_status is failed
 
-- debug:
-    vars: result
+- name: cuckoo | config CWD
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  command: "{{ cuckoo_virtenv }}/bin/cuckoo --cwd {{ cuckoo_cwd }}"
+  args:
+    creates: "{{ cuckoo_cwd }}/__init__.py"
