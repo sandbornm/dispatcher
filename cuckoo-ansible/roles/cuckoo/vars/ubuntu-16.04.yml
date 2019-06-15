@@ -18,6 +18,7 @@ cuckoo_req:
     - tcpdump
     - libcap2-bin
     - libyara-dev
+    - apparmor-utils
 
 pip_pkg:
     - pip
