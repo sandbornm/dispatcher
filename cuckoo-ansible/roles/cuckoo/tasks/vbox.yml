@@ -15,4 +15,37 @@
   register: pkg_status
   failed_when: pkg_status is failed
 
+# configure vbox groups and iface
+- name: check if vbox service exists
+  stat: 
+    path: "/dev/{{ item }}"
+  with_items: 
+   - vboxdrv
+   - vboxdrvu
+   - vboxnetctl
+  register: result
+
+- name: config vbox if driver exists
+  become: yes
+  block:
+    - name: append cuckoo user to vboxusers group
+      user:
+        name: "{{ cuckoo_user }}"
+        groups: vboxusers
+        append: yes
+    - name: check if vboxnet0 exists
+      ignore_errors: true
+      changed_when: false
+      command: ifconfig vboxnet0
+      register: iface
+    - name: init. vboxnet0
+      command: "{{ item }}"
+      with_items:
+        - "vboxmanage hostonlyif create"
+        - "vboxmanage hostonlyif ipconfig vboxnet0 --ip {{ vbox_hostonly_ip }}"
+      when: iface is failed
+  when: result.results[0].stat.exists
+      #when: "{% for r in result.results %} 
+      #      {{ r }}.stat.exists == true
+      #  {% endfor %}"
 

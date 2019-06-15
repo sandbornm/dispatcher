@@ -6,4 +6,4 @@ cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 pcap_group: pcap
 cuckoo_cwd: ~/.cuckoo
 tcpdump_path: /usr/sbin/tcpdump
-
+vbox_hostonly_ip: 192.168.20.1
