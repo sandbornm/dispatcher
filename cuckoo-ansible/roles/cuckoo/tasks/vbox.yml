@@ -36,16 +36,12 @@
     - name: check if vboxnet0 exists
       ignore_errors: true
       changed_when: false
-      command: ifconfig vboxnet0
+      command: ifconfig "{{ vbox_iface }}"
       register: iface
     - name: init. vboxnet0
       command: "{{ item }}"
       with_items:
         - "vboxmanage hostonlyif create"
-        - "vboxmanage hostonlyif ipconfig vboxnet0 --ip {{ vbox_hostonly_ip }}"
+        - "vboxmanage hostonlyif ipconfig {{ vbox_iface }} --ip {{ vbox_hostonly_ip }}"
       when: iface is failed
   when: result.results[0].stat.exists
-      #when: "{% for r in result.results %} 
-      #      {{ r }}.stat.exists == true
-      #  {% endfor %}"
-

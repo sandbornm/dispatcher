@@ -21,7 +21,7 @@
 
 - name: install virtualbox if defined in deafults config
   include: vbox.yml
-  when: use_vbox|bool
+  when: vm_backend.virtualbox|bool
 
 - name: install volatility for memory forensics
   become: true
@@ -32,3 +32,16 @@
 - name: configure tcpdump
   become: true
   include: tcpdump.yml
+
+- name: config guest to host/internet access through iptables
+  become: true
+  include: fw-config.yml
+
+- name: config cuckoo sandbox
+  become_user: "{{ cuckoo_user }}"
+  template:
+    src: cuckoo.conf.j2
+    dest: "{{ cuckoo_cwd }}/conf/cuckoo.conf"
+    owner: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}"
+    backup: yes

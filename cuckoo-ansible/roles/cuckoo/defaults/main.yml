@@ -1,4 +1,14 @@
-use_vbox: true
+vm_backend: {
+   'virtualbox': true,
+   'vmware': false,
+   'kvm': false,
+   'qemu': false,
+   'esx': false,
+   'xenserver': false,
+   'vsphere': false,
+   'avd': false
+ }
+
 enable_volatility: true
 cuckoo_user: ubuntu
 download_dir: ~/Downloads/
@@ -6,4 +16,16 @@ cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 pcap_group: pcap
 cuckoo_cwd: ~/.cuckoo
 tcpdump_path: /usr/sbin/tcpdump
+vbox_iface: vboxnet0
+host_iface: ens33
 vbox_hostonly_ip: 192.168.20.1
+cuckoo_result_server: 192.168.40.130
+
+# mysql://foo:bar@localhost/mydatabase
+# If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.
+cuckoo_db: 
+
+max_analysis_count: 5
+max_machines_count: 0 # set to zero for unlimited
+max_vmstartup_count: 13
+analysis_timeout: 120 # in seconds

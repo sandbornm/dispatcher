@@ -17,6 +17,7 @@ Please change the following parameters for the remote-server you want to install
 - [x] Installing volatility plugin and profiles for memory forensics 
 - [x] Configuring VBox environment for cuckoo user 
 - [x] Configuring tcpdump to use CAPs 
-- [ ] iptable fw rules for guest iface internet-access 
+- [x] iptable fw rules for guest iface internet-access 
+- [x] jinja2 temaplte for cuckoo.conf added! 
 - [ ] add vbox config profile based our needs (configurable) 
 
