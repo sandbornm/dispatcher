@@ -23,6 +23,10 @@
   include: vbox.yml
   when: vm_backend.virtualbox|bool
 
+- name: install vmware if defined in deafults config
+  include: vmware.yml
+  when: vm_backend.vmware|bool
+  
 - name: install volatility for memory forensics
   become: true
   become_user: "{{ cuckoo_user  }}"
@@ -45,3 +49,16 @@
     owner: "{{ cuckoo_user }}"
     group: "{{ cuckoo_user }}"
     backup: yes
+
+- name: vmcloak config
+  become_user: "{{ cuckoo_user }}"
+  block:
+  - name: ensures {{ vmcloak_conf }} dir exists
+    file: path={{ vmcloak_conf }} state=directory
+  - name: copy config file
+    template:
+      src: config.json.j2
+      dest: "{{ vmcloak_conf }}/config.json"
+      owner: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}"
+      backup: yes

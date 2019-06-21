@@ -1,6 +1,6 @@
 vm_backend: {
    'virtualbox': true,
-   'vmware': false,
+   'vmware': true,
    'kvm': false,
    'qemu': false,
    'esx': false,
@@ -13,12 +13,14 @@ enable_volatility: true
 cuckoo_user: ubuntu
 download_dir: ~/Downloads/
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
+vmcloak_conf: ~/.vmcloak
 pcap_group: pcap
 cuckoo_cwd: ~/.cuckoo
 tcpdump_path: /usr/sbin/tcpdump
 vbox_iface: vboxnet0
 host_iface: ens33
-vbox_hostonly_ip: 192.168.20.1
+vbox_hostonly_ip: 192.168.56.1
+vbox_hostonly_mask: 255.255.255.0
 cuckoo_result_server: 192.168.40.130
 
 # mysql://foo:bar@localhost/mydatabase
@@ -29,3 +31,11 @@ max_analysis_count: 5
 max_machines_count: 0 # set to zero for unlimited
 max_vmstartup_count: 13
 analysis_timeout: 120 # in seconds
+
+winxp_serial: HQYWT-4TF3C-PMX79-JFJWD-7G34B
+
+
+# VMWare workstation
+VMWare_URL: https://www.vmware.com/go/getWorkstation-linux
+VMWare_md5sum: 3212ed00463784ca8c67b5acd2c8d1cd
+VMWare_PATH: /usr/bin/vmrun

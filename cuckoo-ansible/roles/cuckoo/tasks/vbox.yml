@@ -42,6 +42,6 @@
       command: "{{ item }}"
       with_items:
         - "vboxmanage hostonlyif create"
-        - "vboxmanage hostonlyif ipconfig {{ vbox_iface }} --ip {{ vbox_hostonly_ip }}"
+        - "vboxmanage hostonlyif ipconfig {{ vbox_iface }} --ip {{ vbox_hostonly_ip }} --netmask {{ vbox_hostonly_mask }}"
       when: iface is failed
   when: result.results[0].stat.exists

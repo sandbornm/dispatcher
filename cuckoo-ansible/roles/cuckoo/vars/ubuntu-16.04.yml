@@ -19,12 +19,15 @@ cuckoo_req:
     - libcap2-bin
     - libyara-dev
     - apparmor-utils
+    - genisoimage
+    - build-essential
 
 pip_pkg:
     - pip
     - setuptools
     - distorm3
     - yara-python
+    - vmcloak
 
 cuckoo_kvm:
     - qemu-kvm

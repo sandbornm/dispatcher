@@ -19,5 +19,7 @@ Please change the following parameters for the remote-server you want to install
 - [x] Configuring tcpdump to use CAPs 
 - [x] iptable fw rules for guest iface internet-access 
 - [x] jinja2 temaplte for cuckoo.conf added! 
-- [ ] add vbox config profile based our needs (configurable) 
-
+- [x] add vbox config profile based on our needs (configurable) 
+- [x] vmclock for auto-generating cuckoo sandbox VMs 
+- [x] VMWare -auto installation w/o user interaction 
+- [ ] md5sum samples 
