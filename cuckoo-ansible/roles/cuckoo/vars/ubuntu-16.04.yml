@@ -15,6 +15,7 @@ cuckoo_req:
     - zlib1g-dev
     - swig
     - git
+    - vim
     - tcpdump
     - libcap2-bin
     - libyara-dev

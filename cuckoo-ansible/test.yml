@@ -1,4 +1,8 @@
 ---
+- hosts: local
+  roles:
+    - local
+
 - hosts: webservers
   become: true
   roles:

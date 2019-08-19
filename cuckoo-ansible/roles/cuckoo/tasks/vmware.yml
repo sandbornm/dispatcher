@@ -10,19 +10,19 @@
   become: yes
   block:
     - get_url:
-      url: "{{ VMWare_URL }}"
-      dest: "/tmp/vmware.bundle"
-      checksum: "md5:{{ VMWare_md5sum }}"
-      # https://communities.vmware.com/thread/564106
+        url: "{{ VMWare_URL }}"
+        dest: "/tmp/vmware.bundle"
+        checksum: "md5:{{ VMWare_md5sum }}"
+        # https://communities.vmware.com/thread/564106
     - shell: |
         set timeout 3m
         chmod +x ./vmware.bundle
         yes '' | ./vmware.bundle -s vmware-workstation serialNumber "N0233-XZK44-J8JDE-0JCHH-CE4HN" --console --eulas-agreed
-      register: result
       args:
         chdir: "/tmp"
         executable: "/bin/bash"
-      when: '"successful" in result.stdout'
+      register: result
+      when: "'successful' in result.stdout"
     - debug:
         var: result
   when: vmrun.stat.exists == False

@@ -11,6 +11,16 @@ Please change the following parameters for the remote-server you want to install
 > `ssh-copy-id ubuntu@192.168.40.128`
 - Finally, so as to start the deployment process, issue the following: 
 > `ansible-playbook -i hosts test.yml -vvv --ask-become-pass` 
+
+## Important 
+if your ssh\_key is protected by password, you need to install ssh-askpass on
+your local, in this way your key will be loaded inside ssh-agent of the current
+session you're already in and it will be used to SSH forward your agent to
+securely clone the private repo of the vmcloak project into your deployment
+environment. 
+
+`sudo apt-get install ssh-askpass` 
+
 ---
 ## TODO List 
 - [x] Installing cuckoo pip under virtualenv 
@@ -22,4 +32,5 @@ Please change the following parameters for the remote-server you want to install
 - [x] add vbox config profile based on our needs (configurable) 
 - [x] vmclock for auto-generating cuckoo sandbox VMs 
 - [x] VMWare -auto installation w/o user interaction 
-- [ ] md5sum samples 
+- [x] md5sum samples 
+- [x] host ssh-agent forwarding to clone vmcloak repo code 

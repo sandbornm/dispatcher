@@ -1,0 +1,12 @@
+auto {{ kvm_iface }}
+iface {{ kvm_iface }} inet static
+    address {{ kvm_bridge_ip }}
+    network {{ kvm_bridge_network }}
+    netmask {{ kvm_bridge_mask }}
+    broadcast {{ kvm_bridge_cast }}
+    gateway {{ kvm_bridge_gw }}
+    dns-nameservers 8.8.8.8
+    bridge_ports {{ host_iface }}
+    bridge_stp off
+    bridge_fd 0
+    bridge_maxwait 0

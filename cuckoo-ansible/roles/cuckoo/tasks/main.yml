@@ -23,6 +23,10 @@
   include: vbox.yml
   when: vm_backend.virtualbox|bool
 
+- name: install kvm if defined in deafults config
+  include: kvm.yml
+  when: vm_backend.kvm|bool
+
 - name: install vmware if defined in deafults config
   include: vmware.yml
   when: vm_backend.vmware|bool
@@ -32,6 +36,11 @@
   become_user: "{{ cuckoo_user  }}"
   include: volatility.yml
   when: enable_volatility|bool
+
+- name: install vmcloak for vm provisioning, creating, modifying
+  become_user: "{{ cuckoo_user  }}"
+  become_flags: "-E"
+  include: vmcloak.yml
 
 - name: configure tcpdump
   become: true

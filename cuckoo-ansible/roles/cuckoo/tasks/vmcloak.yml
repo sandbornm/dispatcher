@@ -1,0 +1,34 @@
+---
+
+- name: ensure sudo keeps SSH_AUTH_SOCK in environment
+  become: yes
+  become_user: root
+  copy: 
+    src: "{{ role_path }}/files/env"
+    dest: /etc/sudoers.d/env
+    mode: 0440
+    owner: root
+    group: root
+
+- name: clone vmcloak repo dev/vmware branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: dev/vmware
+    depth: 1
+    accept_hostkey: yes
+
+- name: install vmcloak dependencies
+  pip:
+      requirements: "{{ download_dir }}/vmcloak/requirements.txt"
+      virtualenv: "{{ cuckoo_virtenv }}"
+
+- name: setuptools | install vmcloak in the cuckoo dedicated virtualenv
+  shell: |
+    source {{ cuckoo_virtenv }}/bin/activate
+    python setup.py build
+    python setup.py install
+  args:
+      chdir: "{{ download_dir }}/vmcloak"
+      executable: /bin/bash

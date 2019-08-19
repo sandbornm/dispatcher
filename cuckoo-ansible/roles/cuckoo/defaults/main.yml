@@ -10,7 +10,7 @@ vm_backend: {
  }
 
 enable_volatility: true
-cuckoo_user: ubuntu
+cuckoo_user: cuckoo
 download_dir: ~/Downloads/
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 vmcloak_conf: ~/.vmcloak
@@ -22,6 +22,15 @@ host_iface: ens33
 vbox_hostonly_ip: 192.168.56.1
 vbox_hostonly_mask: 255.255.255.0
 cuckoo_result_server: 192.168.40.130
+
+
+# kvm
+kvm_iface: virbr0
+kvm_bridge_ip: 192.168.120.10
+kvm_bridge_mask: 255.255.255.0
+kvm_bridge_cast: 192.168.120.255
+kvm_bridge_gw: 192.168.120.1
+kvm_bridge_network: 192.168.120.0
 
 # mysql://foo:bar@localhost/mydatabase
 # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.

@@ -1,0 +1,51 @@
+---
+
+- name: install kvm using apt
+  sudo: yes
+  package:
+      name: "{{ item }}"
+      state: present
+  with_items:
+    - qemu-kvm
+    - libvirt-bin
+    - virtinst
+    - bridge-utils
+    - cpu-checker
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+# configure kvm groups and iface
+- name: check if kvm drivers installed successfully
+  stat:
+    path: "/dev/{{ item }}"
+  with_items:
+   - kvm
+  register: result
+
+- name: append cuckoo user to libvirtd and kvm groups
+  become: yes
+  user:
+    name: "{{ cuckoo_user }}"
+    shell: /bin/bash
+    groups: libvirtd, kvm
+    append: yes
+
+- name: configure kvm bridge iface
+  become: yes
+  become_user: root
+  block:
+    - name: add source of /etc/network/interfaces.d/* to network
+      lineinfile:
+        path: /etc/network/interfaces
+        line: source /etc/network/interfaces.d/*
+
+    - name: config virtbr0 iface kvm
+      template:
+        src: virbr0.conf.j2
+        dest: "/etc/network/interfaces.d/{{ kvm_iface }}"
+
+    - name: Restart network service for interface eth0
+      shell: |
+        ifdown {{ kvm_iface }} && ifup {{ kvm_iface }}
+
+  when: result.results[0].stat.exists

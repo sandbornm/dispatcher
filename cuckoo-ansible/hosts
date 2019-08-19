@@ -2,8 +2,11 @@
 127.0.0.1
 
 [webservers]
-192.168.40.130
+192.168.156.128
+
+[local]
+local_machine ansible_connection=local ansible_host=localhost
 
 [webservers:vars]
-ansible_user=ubuntu
+ansible_user=cuckoo
 
