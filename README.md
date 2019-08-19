@@ -10,12 +10,12 @@ Cuckoo Ansible Playbook for auto-deployment of configured cuckoo instances at la
 
 ## Access to malware samples 
 ----
-*server*: dijkstra.eecs.umich.edu 
-*ip*: http://141.212.114.204/ 
-*malware path*: /var/malware/ 
-*passwd*: MalwareBehaviorReports 
+*server*: dijkstra.eecs.umich.edu  
+*ip*: http://141.212.114.204/  
+*malware path*: /var/malware/  
+*passwd*: MalwareBehaviorReports  
 
-clusters:
-- Hopper 
-  *server*: hopper.eecs.umich.edu 
+clusters:  
+- Hopper  
+  *server*: hopper.eecs.umich.edu  
 
