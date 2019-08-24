@@ -17,20 +17,7 @@ delete_bin_copy = no
 # Specify the name of the machinery module to use, this module will
 # define the interaction between Cuckoo and your virtualization software
 # of choice.
-{% if vm_backend.virtualbox is defined and vm_backend.virtualbox is sameas true %}
-machinery = virtualbox
-{% elif vm_backend.kvm is defined and vm_backend.kvm is sameas true %}
-machinery = libvirt
-{% elif vm_backend.qemu is defined and vm_backend.qemu is sameas true %}
-machinery = qemu
-{% elif vm_backend.esx is defined and vm_backend.esx is sameas true %}
-machinery = libvirt
-{% elif vm_backend.vmware is defined and vm_backend.vmware is sameas true %}
-machinery = vmware
-{% else %}
-machinery = virtualbox
-{% endif %}
-
+machinery = {{ default_backend }}
 # Enable creation of memory dump of the analysis machine before shutting
 # down. Even if turned off, this functionality can also be enabled at
 # submission. Currently available for: VirtualBox and libvirt modules (KVM).

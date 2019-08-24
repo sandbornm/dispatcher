@@ -30,7 +30,11 @@
 - name: install vmware if defined in deafults config
   include: vmware.yml
   when: vm_backend.vmware|bool
-  
+
+- name: install and configure inetsim service
+  include: inetsim.yml
+  become: true
+
 - name: install volatility for memory forensics
   become: true
   become_user: "{{ cuckoo_user  }}"
@@ -59,15 +63,19 @@
     group: "{{ cuckoo_user }}"
     backup: yes
 
-- name: vmcloak config
+- name: activate db for results
   become_user: "{{ cuckoo_user }}"
-  block:
-  - name: ensures {{ vmcloak_conf }} dir exists
-    file: path={{ vmcloak_conf }} state=directory
-  - name: copy config file
-    template:
-      src: config.json.j2
-      dest: "{{ vmcloak_conf }}/config.json"
-      owner: "{{ cuckoo_user }}"
-      group: "{{ cuckoo_user }}"
-      backup: yes
+  replace:
+    path: "{{ cuckoo_cwd }}/conf/reporting.conf"
+    regexp: '(\[mongodb\][^[]*)enabled = no'
+    replace: '\1enabled = yes'
+    owner: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}"
+
+- name: fetch all the latest Cuckoo Signaturs, Yara rules
+  become_user: "{{ cuckoo_user }}"
+  shell: |
+   source {{ cuckoo_virtenv }}/bin/activate
+   cuckoo community
+  args:
+    executable: /bin/bash

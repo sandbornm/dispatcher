@@ -23,12 +23,24 @@ cuckoo_req:
     - genisoimage
     - build-essential
 
+inetsim_req:
+    - perl
+    - perl-base
+    - perl-modules
+    - libnet-server-perl
+    - libnet-dns-perl
+    - libipc-shareable-perl
+    - libio-socket-ssl-perl
+    - nfqueue-bindings-perl
+    - init-system-helpers
+
 pip_pkg:
     - pip
     - setuptools
     - distorm3
     - yara-python
-    - vmcloak
+    - ipython
+    - ipdb
 
 cuckoo_kvm:
     - qemu-kvm

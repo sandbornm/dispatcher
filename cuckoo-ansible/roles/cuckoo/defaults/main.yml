@@ -9,19 +9,29 @@ vm_backend: {
    'avd': false
  }
 
+default_backend: 'vmware'
+
 enable_volatility: true
-cuckoo_user: cuckoo
+cuckoo_user: pwnslinger
 download_dir: ~/Downloads/
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 vmcloak_conf: ~/.vmcloak
 pcap_group: pcap
 cuckoo_cwd: ~/.cuckoo
 tcpdump_path: /usr/sbin/tcpdump
+
+# vbox
 vbox_iface: vboxnet0
 host_iface: ens33
 vbox_hostonly_ip: 192.168.56.1
 vbox_hostonly_mask: 255.255.255.0
-cuckoo_result_server: 192.168.40.130
+
+# vmware
+vmware_iface: vmnet1
+vmware_ip: 192.168.19.1
+vmware_mask: 255.255.255.0
+
+cuckoo_result_server: 192.168.19.1
 
 
 # kvm
