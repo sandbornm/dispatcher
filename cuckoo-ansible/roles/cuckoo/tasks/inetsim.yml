@@ -1,34 +1,23 @@
 ---
-# there's a problem with installing inetsim on ubuntu 16.04 because of a broken
-# dependency related to init-system-helpers.. then I decided to use docker and
-# expose the service
-- name: install package dependencies
-  sudo: yes
-  apt:
-      name: "{{ inetsim_req }}"
-      state: present
-      update_cache: yes
-  register: pkg_status
-  failed_when: pkg_status is failed
 
-- name: Add an Apt signing key, uses whichever key is at the URL
-  apt_key:
-    url: https://www.inetsim.org/inetsim-archive-signing-key.asc
-    state: present
-
-- name: add repo to sources.list apt
-  apt_repository:
-    repo: deb http://www.inetsim.org/debian/ binary/
-    state: present
-    update_cache: yes
-    filename: inetsim
-
-- name: install vbox using apt
-  sudo: yes
-  package:
-      name: inetsim
-      state: present
-  register: pkg_status
-  failed_when: pkg_status is failed
-
+- name: docker compose inetsim
+  become_user: "{{ cuckoo_user }}"
+  block:
+  - name: ensures {{ download_dir }}/inetsim dir exists
+    file: path="{{ download_dir }}/inetsim" state=directory
+  - name: copy docker-compose.yml file
+    copy:
+      src: "{{ role_path }}/files/docker-compose.yml"
+      dest: "{{ download_dir }}/inetsim"
+      owner: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}"
+      backup: yes
+  - name: docker-compose up
+    shell: |
+      set timeout 3m
+      docker-compose stop
+      nohup docker-compose up >/dev/null 2>&1 &
+    args:
+      chdir: "{{ download_dir }}/inetsim"
+      executable: "/bin/bash"
 

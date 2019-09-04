@@ -3,7 +3,7 @@
 - name: install kvm using apt
   sudo: yes
   package:
-      name: "{{ item }}"
+      name: "{{ cuckoo_kvm }}"
       state: present
   with_items:
     - qemu-kvm
@@ -21,6 +21,16 @@
   with_items:
    - kvm
   register: result
+
+- name: pip | install python package dependencies
+  pip:
+      name: libvirt-python
+      state: present
+      virtualenv: "{{ cuckoo_virtenv }}"
+      virtualenv_command: virtualenv
+      virtualenv_python: python2.7
+  register: pkg_status
+  failed_when: pkg_status is failed
 
 - name: append cuckoo user to libvirtd and kvm groups
   become: yes

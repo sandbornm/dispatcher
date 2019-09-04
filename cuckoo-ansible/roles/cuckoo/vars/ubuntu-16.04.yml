@@ -45,6 +45,8 @@ pip_pkg:
 cuckoo_kvm:
     - qemu-kvm
     - libvirt-bin
+    - libvirt-dev
     - ubuntu-vm-builder
     - bridge-utils
-    - python-libvirt
+    - virtinst
+    - cpu-checker

@@ -31,9 +31,12 @@
   include: vmware.yml
   when: vm_backend.vmware|bool
 
+- name: install and configure docker inetsim
+  include: docker.yml
+  become: yes
+
 - name: install and configure inetsim service
   include: inetsim.yml
-  become: true
 
 - name: install volatility for memory forensics
   become: true
@@ -79,3 +82,5 @@
    cuckoo community
   args:
     executable: /bin/bash
+
+- debug: var=ansible_interfaces
