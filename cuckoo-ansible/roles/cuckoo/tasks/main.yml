@@ -84,6 +84,11 @@
     owner: "{{ cuckoo_user }}"
     group: "{{ cuckoo_user }}"
 
+- name: do facts module to get latest information
+  setup:
+    gather_subset:
+      - network
+
 - set_fact:
     inetsim_iface: "{{ ansible_interfaces | select('match','br*') | list | first }}"
 
