@@ -16,7 +16,7 @@ services:
       - "8080:80"
     networks:
       service_net:
-        ipv4_address: 192.168.21.10
+        ipv4_address: {{ inetsim_ipaddr }}
     volumes:
       - $PWD/report:/opt/inetsim/report
       - $PWD/log:/opt/inetsim/log

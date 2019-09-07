@@ -1,0 +1,16 @@
+---
+
+- name: set iptables rules for PRE/POST ROUTING
+  shell: |
+    set timeout 3m
+    iptables -t nat -A PREROUTING -p udp --dport 53 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:53
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:80
+    iptables -t nat -A PREROUTING -p tcp --dport 443 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:443
+    iptables -t nat -A PREROUTING -p tcp --dport 21 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:21
+    iptables -t nat -A POSTROUTING -p udp --sport 53 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:53
+    iptables -t nat -A POSTROUTING -p tcp --sport 80 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:80
+    iptables -t nat -A POSTROUTING -p tcp --sport 443 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:443
+    iptables -t nat -A POSTROUTING -p tcp --sport 21 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:21
+    iptables -A FORWARD -i {{ vmware_iface }} -o {{ inetsim_iface }} -j ACCEPT
+  args:
+    executable: "/bin/bash"

@@ -20,6 +20,9 @@ pcap_group: pcap
 cuckoo_cwd: ~/.cuckoo
 tcpdump_path: /usr/sbin/tcpdump
 
+# inetsim
+inetsim_ipaddr: 192.168.21.10
+
 # vbox
 vbox_iface: vboxnet0
 host_iface: ens33
