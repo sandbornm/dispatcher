@@ -41,6 +41,7 @@ pip_pkg:
     - yara-python
     - ipython
     - ipdb
+    - pyopenssl
 
 cuckoo_kvm:
     - qemu-kvm

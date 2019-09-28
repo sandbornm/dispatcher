@@ -21,6 +21,10 @@ environment.
 
 `sudo apt-get install ssh-askpass` 
 
+## Note 
+In case you received an error regarding pyopenssl: 
+`sudo python -m easy_install --upgrade pyOpenSsl` 
+
 ---
 ## TODO List 
 - [x] Installing cuckoo pip under virtualenv 
@@ -34,3 +38,4 @@ environment.
 - [x] VMWare -auto installation w/o user interaction 
 - [x] md5sum samples 
 - [x] host ssh-agent forwarding to clone vmcloak repo code 
+- [ ] QEMU source code compilation + patching, KVM, libvirt apparmor config

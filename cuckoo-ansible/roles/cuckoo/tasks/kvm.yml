@@ -9,6 +9,8 @@
     - qemu-kvm
     - libvirt-bin
     - virtinst
+    - virt-manager
+    - libvirt-dev
     - bridge-utils
     - cpu-checker
   register: pkg_status
