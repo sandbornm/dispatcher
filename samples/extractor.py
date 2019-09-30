@@ -2,7 +2,6 @@
 from zipfile import ZipFile
 import os
 import shutil
-import IPython
 
 PASSWD = b"MalwareBehaviorReports"
 SAMPLES_PATH = '/var/malware/wild-samples.zip'
@@ -27,7 +26,6 @@ def main():
 
         with ZipFile(REPORT_PATH, 'r') as f:
             inflst = f.infolist()
-            IPython.embed()
             for inf in inflst:
                 for mal in malware_list:
                     if mal in inf.filename and 'json' in inf.filename:

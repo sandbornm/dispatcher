@@ -28,3 +28,6 @@
 - name: add current user to the docker group
   become: yes
   user: name={{ cuckoo_user }} groups=docker append=yes
+
+- name: reset ssh connection to allow user changes to affect current login user
+  meta: reset_connection

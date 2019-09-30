@@ -2,11 +2,12 @@
 127.0.0.1
 
 [webservers]
-192.168.156.129
+192.168.156.131
 
 [local]
 local_machine ansible_connection=local ansible_host=localhost
 
 [webservers:vars]
 ansible_user=pwnslinger
+ansible_python_interpreter = /usr/bin/python3
 

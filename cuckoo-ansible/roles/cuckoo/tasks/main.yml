@@ -23,7 +23,8 @@
   include: vbox.yml
   when: vm_backend.virtualbox|bool
 
-- name: install kvm if defined in deafults config
+- name: install kvm if defined in default config
+  become: yes
   include: kvm.yml
   when: vm_backend.kvm|bool
 

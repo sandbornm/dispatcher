@@ -1,12 +1,23 @@
 ---
 
-- name: install kvm using apt
+- name: patch and install qemu
   sudo: yes
+  block:
+      - name: copy script to server
+        copy: 
+          src: "{{ role_path  }}/files/qemu-patch.sh"
+          dest: /tmp/
+          mode: 0755
+      - name: execute the script in async mode
+        command: /tmp/qemu-patch.sh qemu
+        register: result
+        when: '"Patched, compiled and installed" in result.stdout'
+
+- name: install kvm/libvirt using apt
   package:
       name: "{{ cuckoo_kvm }}"
       state: present
   with_items:
-    - qemu-kvm
     - libvirt-bin
     - virtinst
     - virt-manager
@@ -25,6 +36,7 @@
   register: result
 
 - name: pip | install python package dependencies
+  become_user: "{{ cuckoo_user }}"
   pip:
       name: libvirt-python
       state: present
@@ -42,22 +54,56 @@
     groups: libvirtd, kvm
     append: yes
 
-- name: configure kvm bridge iface
-  become: yes
-  become_user: root
+- name: reset ssh connection to allow user changes to affect current login user
+  meta: reset_connection
+
+- name: setup libvirtd unix ro/rw permissions
+  replace:
+    path: "{{ libvirt_conf }}"
+    regexp: '{{ item.regex }}'
+    replace: '{{ item.replace }}'
+    owner: root
+    group: root
+  with_items:
+    - { regex: '#unix_sock_group', replace: 'unix_sock_group' }
+    - { regex: '#unix_sock_ro_perms = "0777"', replace: 'unix_sock_ro_perms = "0770"' }
+    - { regex:  '#unix_sock_rw_perms = "0770"', replace: 'unix_sock_rw_perms = "0770"'}
+    - { regex:  '#auth_unix_ro = "none"', replace: 'auth_unix_ro = "none"'}
+    - { regex:  '#auth_unix_rw = "none"', replace: 'auth_unix_rw = "none"'}
+
+- name: configuring apparmor for libvirtd
   block:
-    - name: add source of /etc/network/interfaces.d/* to network
-      lineinfile:
-        path: /etc/network/interfaces
-        line: source /etc/network/interfaces.d/*
+    - name: setup user/group qemu.conf
+      replace:
+        path: "{{ qemu_conf }}"
+        regexp: '{{ item.regex }}'
+        replace: '{{ item.replace }}'
+        owner: root
+        group: root
+      with_items:
+        - { regex: '#user = "root"', replace: 'user = "{{ cuckoo_user }}"' }
+        - { regex: '#group = "root"', replace: 'group = "libvirtd"' }
+        - { regex: '#security_driver = "selinux"', replace: 'security_driver = "none"' }
+    - name: disable apparmor for libvirtd
+      command: aa-disable /usr/sbin/libvirtd
+      ignore_errors: yes
 
-    - name: config virtbr0 iface kvm
-      template:
-        src: virbr0.conf.j2
-        dest: "/etc/network/interfaces.d/{{ kvm_iface }}"
-
-    - name: Restart network service for interface eth0
-      shell: |
-        ifdown {{ kvm_iface }} && ifup {{ kvm_iface }}
-
-  when: result.results[0].stat.exists
+    #- name: configure kvm bridge iface
+    #  become: yes
+    #  become_user: root
+    #  block:
+    #    - name: add source of /etc/network/interfaces.d/* to network
+    #      lineinfile:
+    #        path: /etc/network/interfaces
+    #        line: source /etc/network/interfaces.d/*
+    #
+    #    - name: config virtbr0 iface kvm
+    #      template:
+    #        src: virbr0.conf.j2
+    #        dest: "/etc/network/interfaces.d/{{ kvm_iface }}"
+    #
+    #    - name: Restart network service for interface eth0
+    #      shell: |
+    #        ifdown {{ kvm_iface }} && ifup {{ kvm_iface }}
+    #
+    #  when: result.results[0].stat.exists

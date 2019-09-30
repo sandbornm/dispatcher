@@ -1,7 +1,7 @@
 vm_backend: {
-   'virtualbox': true,
-   'vmware': true,
-   'kvm': false,
+   'virtualbox': false,
+   'vmware': false,
+   'kvm': true,
    'qemu': false,
    'esx': false,
    'xenserver': false,
@@ -44,6 +44,8 @@ kvm_bridge_mask: 255.255.255.0
 kvm_bridge_cast: 192.168.120.255
 kvm_bridge_gw: 192.168.120.1
 kvm_bridge_network: 192.168.120.0
+libvirt_conf: /etc/libvirt/libvirtd.conf
+qemu_conf: /etc/libvirt/qemu.conf
 
 # mysql://foo:bar@localhost/mydatabase
 # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.

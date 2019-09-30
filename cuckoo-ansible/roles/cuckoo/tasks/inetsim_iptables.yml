@@ -1,16 +1,49 @@
 ---
 
-- name: set iptables rules for PRE/POST ROUTING
+- name: set iptables rules for PRE/POST ROUTING for vmware
   shell: |
     set timeout 3m
-    iptables -t nat -A PREROUTING -p udp --dport 53 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:53
-    iptables -t nat -A PREROUTING -p tcp --dport 80 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:80
-    iptables -t nat -A PREROUTING -p tcp --dport 443 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:443
-    iptables -t nat -A PREROUTING -p tcp --dport 21 -i vmnet1 -j DNAT --to {{ inetsim_ipaddr }}:21
+    iptables -t nat -A PREROUTING -p udp --dport 53 -i {{ vmware_iface }} -j DNAT --to {{ inetsim_ipaddr }}:53
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -i {{ vmware_iface }} -j DNAT --to {{ inetsim_ipaddr }}:80
+    iptables -t nat -A PREROUTING -p tcp --dport 443 -i {{ vmware_iface }} -j DNAT --to {{ inetsim_ipaddr }}:443
+    iptables -t nat -A PREROUTING -p tcp --dport 21 -i {{ vmware_iface }} -j DNAT --to {{ inetsim_ipaddr }}:21
     iptables -t nat -A POSTROUTING -p udp --sport 53 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:53
     iptables -t nat -A POSTROUTING -p tcp --sport 80 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:80
     iptables -t nat -A POSTROUTING -p tcp --sport 443 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:443
     iptables -t nat -A POSTROUTING -p tcp --sport 21 -o {{ inetsim_iface }} -j SNAT --to {{ vmware_ip }}:21
     iptables -A FORWARD -i {{ vmware_iface }} -o {{ inetsim_iface }} -j ACCEPT
+  when: vm_backend.vmware|bool
+  args:
+    executable: "/bin/bash"
+
+- name: set iptables rules for PRE/POST ROUTING for virtualbox
+  shell: |
+    set timeout 3m
+    iptables -t nat -A PREROUTING -p udp --dport 53 -i {{ vbox_iface }} -j DNAT --to {{ inetsim_ipaddr }}:53
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -i {{ vbox_iface }} -j DNAT --to {{ inetsim_ipaddr }}:80
+    iptables -t nat -A PREROUTING -p tcp --dport 443 -i {{ vbox_iface }} -j DNAT --to {{ inetsim_ipaddr }}:443
+    iptables -t nat -A PREROUTING -p tcp --dport 21 -i {{ vbox_iface }} -j DNAT --to {{ inetsim_ipaddr }}:21
+    iptables -t nat -A POSTROUTING -p udp --sport 53 -o {{ inetsim_iface }} -j SNAT --to {{ vbox_hostonly_ip }}:53
+    iptables -t nat -A POSTROUTING -p tcp --sport 80 -o {{ inetsim_iface }} -j SNAT --to {{ vbox_hostonly_ip  }}:80
+    iptables -t nat -A POSTROUTING -p tcp --sport 443 -o {{ inetsim_iface }} -j SNAT --to {{ vbox_hostonly_ip  }}:443
+    iptables -t nat -A POSTROUTING -p tcp --sport 21 -o {{ inetsim_iface }} -j SNAT --to {{ vbox_hostonly_ip  }}:21
+    iptables -A FORWARD -i {{ vbox_iface }} -o {{ inetsim_iface }} -j ACCEPT
+  when: vm_backend.virtualbox|bool
+  args:
+    executable: "/bin/bash"
+
+- name: set iptables rules for PRE/POST ROUTING for kvm/qemu
+  shell: |
+    set timeout 3m
+    iptables -t nat -A PREROUTING -p udp --dport 53 -i {{ kvm_iface }} -j DNAT --to {{ inetsim_ipaddr }}:53
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -i {{ kvm_iface }} -j DNAT --to {{ inetsim_ipaddr }}:80
+    iptables -t nat -A PREROUTING -p tcp --dport 443 -i {{ kvm_iface }} -j DNAT --to {{ inetsim_ipaddr }}:443
+    iptables -t nat -A PREROUTING -p tcp --dport 21 -i {{ kvm_iface }} -j DNAT --to {{ inetsim_ipaddr }}:21
+    iptables -t nat -A POSTROUTING -p udp --sport 53 -o {{ inetsim_iface }} -j SNAT --to {{ kvm_bridge_ip }}:53
+    iptables -t nat -A POSTROUTING -p tcp --sport 80 -o {{ inetsim_iface }} -j SNAT --to {{ kvm_bridge_ip }}:80
+    iptables -t nat -A POSTROUTING -p tcp --sport 443 -o {{ inetsim_iface }} -j SNAT --to {{ kvm_bridge_ip }}:443
+    iptables -t nat -A POSTROUTING -p tcp --sport 21 -o {{ inetsim_iface }} -j SNAT --to {{ kvm_bridge_ip }}:21
+    iptables -A FORWARD -i {{ kvm_iface }} -o {{ inetsim_iface }} -j ACCEPT
+  when: vm_backend.kvm|bool
   args:
     executable: "/bin/bash"
