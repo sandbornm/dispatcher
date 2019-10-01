@@ -9,7 +9,7 @@ vm_backend: {
    'avd': false
  }
 
-default_backend: 'vmware'
+default_backend: 'kvm'
 
 enable_volatility: true
 cuckoo_user: pwnslinger
@@ -34,9 +34,6 @@ vmware_iface: vmnet1
 vmware_ip: 192.168.19.1
 vmware_mask: 255.255.255.0
 
-cuckoo_result_server: 192.168.19.1
-
-
 # kvm
 kvm_iface: virbr0
 kvm_bridge_ip: 192.168.120.10
@@ -46,6 +43,8 @@ kvm_bridge_gw: 192.168.120.1
 kvm_bridge_network: 192.168.120.0
 libvirt_conf: /etc/libvirt/libvirtd.conf
 qemu_conf: /etc/libvirt/qemu.conf
+
+cuckoo_result_server: "{{ kvm_bridge_gw if vm_backend.kvm|bool else vmware_ip }}"
 
 # mysql://foo:bar@localhost/mydatabase
 # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.

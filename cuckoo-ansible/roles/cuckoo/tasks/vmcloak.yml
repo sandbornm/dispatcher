@@ -19,6 +19,29 @@
     depth: 1
     accept_hostkey: yes
     force: yes
+  when: vm_backend.vmware|bool
+
+- name: clone vmcloak repo master branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: master
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+  when: vm_backend.virtualbox|bool
+
+- name: clone vmcloak repo wip/kvm_virsh branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: wip/kvm_virsh
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+  when: vm_backend.kvm|bool
 
 - name: install vmcloak dependencies
   pip:
