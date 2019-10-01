@@ -1,5 +1,21 @@
 ---
 
+# Requested package manager apt was not usable by this module: 'APT' object has
+# no attribute '_cache'
+#- name: Gather the rpm package facts
+#  package_facts:
+#    manager: apt
+#    strategy: all
+
+#- name: Print the rpm package facts
+#  debug:
+#    var: ansible_facts.packages
+
+- name: check if qemu installed currently
+  command: "dpkg-query -W qemu-3.1.0"
+  ignore_errors: true
+  register: installed_package
+
 - name: patch and install qemu
   sudo: yes
   block:
@@ -8,22 +24,24 @@
           src: "{{ role_path  }}/files/qemu-patch.sh"
           dest: /tmp/
           mode: 0755
-      - name: execute the script in async mode
+      - name: execute the script
         command: /tmp/qemu-patch.sh qemu
         register: result
-        when: '"Patched, compiled and installed" in result.stdout'
+        failed_when: '"Patched" not in result.stdout'
+  when: installed_package is failed
 
 - name: install kvm/libvirt using apt
-  package:
-      name: "{{ cuckoo_kvm }}"
-      state: present
-  with_items:
-    - libvirt-bin
-    - virtinst
-    - virt-manager
-    - libvirt-dev
-    - bridge-utils
-    - cpu-checker
+  sudo: yes
+  apt:
+      pkg:
+        - libvirt-bin
+        - virtinst
+        - virt-manager
+        - libvirt-dev
+        - bridge-utils
+        - cpu-checker
+      state: latest
+      dpkg_options: 'force-overwrite'
   register: pkg_status
   failed_when: pkg_status is failed
 
