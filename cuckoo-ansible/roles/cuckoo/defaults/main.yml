@@ -36,13 +36,14 @@ vmware_mask: 255.255.255.0
 
 # kvm
 kvm_iface: virbr0
-kvm_bridge_ip: 192.168.120.10
+kvm_bridge_gw: 192.168.122.1
+kvm_range_start: 192.168.122.2
 kvm_bridge_mask: 255.255.255.0
-kvm_bridge_cast: 192.168.120.255
-kvm_bridge_gw: 192.168.120.1
-kvm_bridge_network: 192.168.120.0
+kvm_bridge_cast: 192.168.122.255
+kvm_bridge_network: 192.168.122.0
 libvirt_conf: /etc/libvirt/libvirtd.conf
 qemu_conf: /etc/libvirt/qemu.conf
+network_conf: /etc/libvirt/qemu/networks/default.xml
 
 cuckoo_result_server: "{{ kvm_bridge_gw if vm_backend.kvm|bool else vmware_ip }}"
 
