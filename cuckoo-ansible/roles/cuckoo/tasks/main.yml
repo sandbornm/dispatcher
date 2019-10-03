@@ -67,6 +67,10 @@
     group: "{{ cuckoo_user }}"
     backup: yes
 
+- name: show templating results
+  debug:
+    msg: "{{ lookup('template', './cuckoo.conf.j2') }}"
+
 - name: activate db for results
   become_user: "{{ cuckoo_user }}"
   replace:
