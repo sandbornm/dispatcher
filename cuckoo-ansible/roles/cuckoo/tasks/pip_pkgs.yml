@@ -25,6 +25,7 @@
    source {{ cuckoo_virtenv }}/bin/activate
    python stuff/monitor.py
    python setup.py build
+   python setup.py sdist
    pip install .
   args:
     chdir: "{{ download_dir }}/cuckoo"
