@@ -1,0 +1,4 @@
+[submodule "cuckoo"]
+	path = cuckoo
+	url = git@github.com:pwnslinger/cuckoo.git
+	branch = wip/patch_aux
