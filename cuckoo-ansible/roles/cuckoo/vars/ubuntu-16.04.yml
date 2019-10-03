@@ -42,6 +42,7 @@ pip_pkg:
     - ipython
     - ipdb
     - pyopenssl
+    - m2crypto==0.24.0
 
 cuckoo_kvm:
     - qemu-kvm

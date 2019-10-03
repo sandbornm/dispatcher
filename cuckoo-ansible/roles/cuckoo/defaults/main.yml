@@ -11,7 +11,7 @@ vm_backend: {
 
 default_backend: 'kvm'
 
-enable_volatility: true
+enable_volatility: false
 cuckoo_user: pwnslinger
 download_dir: ~/Downloads/
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv

@@ -10,9 +10,10 @@ l.setLevel(logging.INFO)
 task_id = []
 
 def submit():
-    flist = glob.glob('./100_samples/*/*.bin')
+    flist = glob.glob('./100_evasion/*/*.bin')
     for f in flist:
-        subprocess.call(['cuckoo', 'submit', '--timeout', '60', os.path.abspath(f)])
+        subprocess.call(['cuckoo', 'submit', '--timeout', '240', '--machine',
+                         'win7x86_conf4', os.path.abspath(f)])
     #    task_id.append(db.add_path(file_path=os.path.abspath(f), timeout=60))
     #    r = requests.post()
     #return task_id
