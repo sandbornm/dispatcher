@@ -123,7 +123,9 @@
   become_user: "{{ cuckoo_user }}"
   shell: |
     set timeout 3m
-    {{ cuckoo_virtenv }}/bin/cuckoo rooter -g {{ cuckoo_user }} --sudo >/dev/null 2>&1 &
+    "nohup {{ cuckoo_virtenv }}/bin/cuckoo rooter -g {{ cuckoo_user }} --sudo >/dev/null 2>&1 &"
   args:
    executable: "/bin/bash"
+  async: 10
+  poll: 0
 
