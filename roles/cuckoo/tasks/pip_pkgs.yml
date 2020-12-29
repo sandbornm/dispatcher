@@ -1,0 +1,49 @@
+---
+
+- name: pip | install python package dependencies
+  pip:
+      name: "{{ pip_pkg }}"
+      state: present
+      virtualenv: "{{ cuckoo_virtenv }}"
+      virtualenv_command: virtualenv
+      virtualenv_python: python2.7
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+- name: clone cuckoo repo wip/patch_aux branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/cuckoo.git
+    dest: "{{ download_dir }}/cuckoo"
+    version: wip/patch_aux
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+
+- name: setuptools | install cuckoo in the cuckoo dedicated virtualenv
+  shell: |
+   source {{ cuckoo_virtenv }}/bin/activate
+   python stuff/monitor.py
+   python setup.py build
+   python setup.py sdist
+   pip install .
+  args:
+    chdir: "{{ download_dir }}/cuckoo"
+    executable: /bin/bash
+
+    #- name: pip | install cuckoo sandbox inside virtualenv
+    #  pip:
+    #      name: cuckoo
+    #      state: present
+    #      virtualenv: "{{ cuckoo_virtenv }}"
+    #      virtualenv_command: virtualenv
+    #      virtualenv_python: python2.7
+    #  register: result
+    #  failed_when: pkg_status is failed
+
+- name: cuckoo | config CWD
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  command: "{{ cuckoo_virtenv }}/bin/cuckoo --cwd {{ cuckoo_cwd }}"
+  args:
+    creates: "{{ cuckoo_cwd }}/__init__.py"

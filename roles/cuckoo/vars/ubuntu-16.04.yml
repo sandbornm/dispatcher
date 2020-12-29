@@ -1,0 +1,54 @@
+---
+
+cuckoo_req:
+    - python
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - mongodb
+    - python-virtualenv
+    - python-setuptools
+    - libjpeg-dev
+    - zlib1g-dev
+    - swig
+    - git
+    - vim
+    - tcpdump
+    - libcap2-bin
+    - libyara-dev
+    - apparmor-utils
+    - genisoimage
+    - build-essential
+
+inetsim_req:
+    - perl
+    - perl-base
+    - perl-modules
+    - libnet-server-perl
+    - libnet-dns-perl
+    - libipc-shareable-perl
+    - libio-socket-ssl-perl
+    - nfqueue-bindings-perl
+    - init-system-helpers
+
+pip_pkg:
+    - pip
+    - setuptools
+    - distorm3
+    - yara-python
+    - ipython
+    - ipdb
+    - pyopenssl
+    - m2crypto==0.24.0
+
+cuckoo_kvm:
+    - qemu-kvm
+    - libvirt-bin
+    - libvirt-dev
+    - ubuntu-vm-builder
+    - bridge-utils
+    - virtinst
+    - cpu-checker

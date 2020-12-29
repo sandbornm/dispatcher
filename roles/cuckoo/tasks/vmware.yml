@@ -1,0 +1,52 @@
+
+---
+
+- name: check if vmrun exists
+  stat:
+    path: "{{ VMWare_PATH }}"
+  register: vmrun
+
+- name: install VMWare Workstation
+  become: yes
+  block:
+    - get_url:
+        url: "{{ VMWare_URL }}"
+        dest: "/tmp/vmware.bundle"
+        checksum: "md5:{{ VMWare_md5sum }}"
+        # https://communities.vmware.com/thread/564106
+    - shell: |
+        set timeout 3m
+        chmod +x ./vmware.bundle
+        yes '' | ./vmware.bundle -s vmware-workstation serialNumber "N0233-XZK44-J8JDE-0JCHH-CE4HN" --console --eulas-agreed
+      args:
+        chdir: "/tmp"
+        executable: "/bin/bash"
+      register: result
+    - debug:
+        var: result
+      when: '"successful" in result.stdout'
+  when: vmrun.stat.exists == False
+
+- name: config vmware vmnet1 if driver exists
+  become: yes
+  block:
+    - name: check if vmnet1 exists
+      ignore_errors: yes
+      changed_when: False
+      command: ifconfig "{{ vmware_iface }}"
+      register: iface
+    - name: set ipaddr iface
+      command: ifconfig "{{ vmware_iface }}" "{{ vmware_ip }}" netmask "{{ vmware_mask }}"
+      args:
+        executable: /bin/bash
+      failed_when: "'Device not found' in iface.stderr"
+  rescue:
+    - name: run a script to fix the issue
+      script: "{{ role_path }}/files/vmcloak-vmnet.sh"
+      args:
+        executable: /bin/bash
+    - name: set ipaddr iface
+      command: ifconfig "{{ vmwre_iface }}" "{{ vmware_ip }}" netmask "{{ vmware_mask }}"
+      args:
+        executable: /bin/bash
+

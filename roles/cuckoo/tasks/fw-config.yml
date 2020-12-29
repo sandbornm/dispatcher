@@ -1,0 +1,16 @@
+---
+
+- name: configure firewall iptables
+  command: "{{ item }}"
+  with_items:
+    - "iptables -A FORWARD -o {{ host_iface }} -i {{ vbox_iface }} -s {{ vbox_hostonly_ip }}/24 -m conntrack --ctstate NEW -j ACCEPT"
+    - "iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
+    - "iptables -A POSTROUTING -t nat -j MASQUERADE"
+
+- name: enable ip forwarding in kernel
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes

@@ -1,0 +1,12 @@
+[localhost]
+127.0.0.1
+
+[webservers]
+192.168.156.133
+
+[local]
+local_machine ansible_connection=local ansible_host=localhost
+
+[webservers:vars]
+ansible_user=pwnslinger
+

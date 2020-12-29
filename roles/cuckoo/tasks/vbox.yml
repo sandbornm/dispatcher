@@ -1,0 +1,52 @@
+---
+
+- name: Add an Apt signing key, uses whichever key is at the URL
+  apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    state: present
+
+- name: add repo to sources.list apt
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian {{ ansible_lsb.codename  }} contrib
+    state: present
+    update_cache: yes
+    filename: virtualbox
+
+- name: install vbox using apt
+  sudo: yes
+  package:
+      name: virtualbox
+      state: present
+  register: pkg_status
+  failed_when: pkg_status is failed
+
+# configure vbox groups and iface
+- name: check if vbox service exists
+  stat: 
+    path: "/dev/{{ item }}"
+  with_items: 
+   - vboxdrv
+   - vboxdrvu
+   - vboxnetctl
+  register: result
+
+- name: config vbox if driver exists
+  become: yes
+  block:
+    - name: append cuckoo user to vboxusers group
+      user:
+        name: "{{ cuckoo_user }}"
+        groups: vboxusers
+        append: yes
+    - name: check if vboxnet0 exists
+      ignore_errors: true
+      changed_when: false
+      command: ifconfig "{{ vbox_iface }}"
+      register: iface
+    - name: init. vboxnet0
+      command: "{{ item }}"
+      with_items:
+        - "vboxmanage hostonlyif create"
+        - "vboxmanage hostonlyif ipconfig {{ vbox_iface }} --ip {{ vbox_hostonly_ip }} --netmask {{ vbox_hostonly_mask }}"
+      when: iface is failed
+  when: result.results[0].stat.exists

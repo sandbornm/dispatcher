@@ -1,0 +1,19 @@
+---
+
+- name: disable Apparmor tcpdump on ubuntu
+  become: true
+  ignore_errors: true
+  changed_when: false
+  command: aa-disable {{ tcpdump_path }}
+
+- name: bash | configure tcpdump cuz we don't wanna give cuckoo root user!
+  become: true
+  shell: |
+    groupadd {{ pcap_group }}
+    usermod -aG {{ pcap_group }} {{ cuckoo_user }}
+    chgrp {{ pcap_group }} {{ tcpdump_path }}
+    setcap cap_net_raw,cap_net_admin=eip {{ tcpdump_path }}
+  args:
+    executable: /bin/bash
+  register: result
+  failed_when: result is failed

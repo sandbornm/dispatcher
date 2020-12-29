@@ -1,0 +1,65 @@
+vm_backend: {
+   'virtualbox': false,
+   'vmware': false,
+   'kvm': true,
+   'qemu': false,
+   'esx': false,
+   'xenserver': false,
+   'vsphere': false,
+   'avd': false
+ }
+
+default_backend: 'kvm'
+
+enable_volatility: false
+cuckoo_user: pwnslinger
+download_dir: ~/Downloads/
+cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
+vmcloak_conf: ~/.vmcloak
+pcap_group: pcap
+cuckoo_cwd: ~/.cuckoo
+tcpdump_path: /usr/sbin/tcpdump
+
+# inetsim
+inetsim_ipaddr: 192.168.21.10
+
+# vbox
+vbox_iface: vboxnet0
+host_iface: ens33
+vbox_hostonly_ip: 192.168.56.1
+vbox_hostonly_mask: 255.255.255.0
+
+# vmware
+vmware_iface: vmnet1
+vmware_ip: 192.168.19.1
+vmware_mask: 255.255.255.0
+
+# kvm
+kvm_iface: virbr0
+kvm_bridge_gw: 192.168.122.1
+kvm_range_start: 192.168.122.2
+kvm_bridge_mask: 255.255.255.0
+kvm_bridge_cast: 192.168.122.255
+kvm_bridge_network: 192.168.122.0
+libvirt_conf: /etc/libvirt/libvirtd.conf
+qemu_conf: /etc/libvirt/qemu.conf
+network_conf: /etc/libvirt/qemu/networks/default.xml
+
+cuckoo_result_server: "{{ kvm_bridge_gw if vm_backend.kvm|bool else vmware_ip }}"
+
+# mysql://foo:bar@localhost/mydatabase
+# If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.
+cuckoo_db: 
+
+max_analysis_count: 5
+max_machines_count: 0 # set to zero for unlimited
+max_vmstartup_count: 13
+analysis_timeout: 120 # in seconds
+
+winxp_serial: HQYWT-4TF3C-PMX79-JFJWD-7G34B
+
+
+# VMWare workstation
+VMWare_URL: https://www.vmware.com/go/getWorkstation-linux
+VMWare_md5sum: 3212ed00463784ca8c67b5acd2c8d1cd
+VMWare_PATH: /usr/bin/vmrun

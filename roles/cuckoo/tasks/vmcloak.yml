@@ -1,0 +1,93 @@
+---
+
+- name: ensure sudo keeps SSH_AUTH_SOCK in environment
+  become: yes
+  become_user: root
+  copy: 
+    src: "{{ role_path }}/files/env"
+    dest: /etc/sudoers.d/env
+    mode: 0440
+    owner: root
+    group: root
+
+- name: clone vmcloak repo dev/vmware branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: dev/vmware
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+  when: vm_backend.vmware|bool
+
+- name: clone vmcloak repo master branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: master
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+  when: vm_backend.virtualbox|bool
+
+- name: clone vmcloak repo wip/kvm_virsh branch on local
+  become: no
+  git:
+    repo:  git@github.com:pwnslinger/vmcloak.git
+    dest: "{{ download_dir }}/vmcloak"
+    version: wip/kvm_virsh
+    depth: 1
+    accept_hostkey: yes
+    force: yes
+  when: vm_backend.kvm|bool
+
+- name: install vmcloak dependencies
+  pip:
+      requirements: "{{ download_dir }}/vmcloak/requirements.txt"
+      virtualenv: "{{ cuckoo_virtenv }}"
+
+      #- name: pip | install vmcloak in virtualenv
+      #  pip:
+      #      name: git@github.com:pwnslinger/vmcloak.git
+      #      virtualenv: "{{ cuckoo_virtenv }}"
+- name: setuptools | install vmcloak in the cuckoo dedicated virtualenv
+  shell: |
+   source {{ cuckoo_virtenv }}/bin/activate
+   python setup.py build
+   pip install .
+  args:
+    chdir: "{{ download_dir }}/vmcloak"
+    executable: /bin/bash
+
+- name: vmcloak config
+  become_user: "{{ cuckoo_user }}"
+  block:
+  - name: ensures {{ vmcloak_conf }} dir exists
+    file: path="{{ vmcloak_conf }}/config" state=directory
+  - name: copy config file
+    template:
+      src: config.json.j2
+      dest: "{{ vmcloak_conf }}/config/config.json"
+      owner: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}"
+      backup: yes
+
+- name: vmcloak database of vms
+  become_user: "{{ cuckoo_user }}"
+  block:
+  - name: ensures {{ vmcloak_conf }} dir exists
+    file: path={{ vmcloak_conf }} state=directory
+  - name: copy sqlite db file
+    copy:
+      src: "{{ role_path }}/files/repository.db"
+      dest: "{{ vmcloak_conf }}/"
+      owner: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}"
+      backup: yes
+
+- name: copy vms ova files to the deployment server
+  debug: msg="file is {{item}}"
+  with_items:
+      - "{{'~/.vmcloak/image/win*/*.ova' | fileglob}}"

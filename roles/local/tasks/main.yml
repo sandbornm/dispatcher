@@ -1,0 +1,4 @@
+- name: load ssh key
+  shell: |
+    ssh-add ~/.ssh/id_rsa
+
