@@ -12,8 +12,8 @@ vm_backend: {
 default_backend: 'kvm'
 
 enable_volatility: false
-cuckoo_user: pwnslinger
-download_dir: ~/Downloads/
+cuckoo_user: michael
+download_dir: ~/Downloads
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 vmcloak_conf: ~/.vmcloak
 pcap_group: pcap

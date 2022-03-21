@@ -13,7 +13,7 @@
 - name: clone cuckoo repo wip/patch_aux branch on local
   become: no
   git:
-    repo: git@github.com:sandbornm/cuckoo.git 
+    repo: https://github.com/sandbornm/cuckoo.git
     dest: "{{ download_dir }}/cuckoo"
     version: wip/patch_aux
     depth: 1

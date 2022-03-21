@@ -8,7 +8,7 @@
 - name: install package dependencies
   become: yes
   apt:
-      name: "{{ cuckoo_req  }}"
+      name: "{{ cuckoo_req }}"
       state: present
       update_cache: yes
   register: pkg_status
@@ -16,7 +16,7 @@
 
 - name: install required pip packages
   become: true
-  become_user: "{{ cuckoo_user  }}"
+  become_user: "{{ cuckoo_user }}"
   include: pip_pkgs.yml
 
 - name: install virtualbox if defined in deafults config
@@ -64,7 +64,7 @@
     src: cuckoo.conf.j2
     dest: "{{ cuckoo_cwd }}/conf/cuckoo.conf"
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}2"
     backup: yes
 
 - name: show templating results
@@ -78,7 +78,7 @@
     regexp: '(\[mongodb\][^[]*)enabled = no'
     replace: '\1enabled = yes'
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}2"
 
 - name: change routing options for cuckoo
   become_user: "{{ cuckoo_user }}"
@@ -87,7 +87,7 @@
     regexp: '(route = )[a-zA-Z]+\n'
     replace: '\1inetsim\n'
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}2"
 
 - name: do facts module to get latest information
   setup:

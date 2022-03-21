@@ -13,7 +13,7 @@
 - name: clone vmcloak repo dev/vmware branch on local
   become: no
   git:
-    repo:  git@github.com:pwnslinger/vmcloak.git
+    repo:  https://github.com/pwnslinger/vmcloak.git
     dest: "{{ download_dir }}/vmcloak"
     version: dev/vmware
     depth: 1
@@ -24,7 +24,7 @@
 - name: clone vmcloak repo master branch on local
   become: no
   git:
-    repo:  git@github.com:pwnslinger/vmcloak.git
+    repo:  https://github.com/pwnslinger/vmcloak.git
     dest: "{{ download_dir }}/vmcloak"
     version: master
     depth: 1
@@ -35,7 +35,7 @@
 - name: clone vmcloak repo wip/kvm_virsh branch on local
   become: no
   git:
-    repo:  git@github.com:pwnslinger/vmcloak.git
+    repo:  https://github.com/pwnslinger/vmcloak.git
     dest: "{{ download_dir }}/vmcloak"
     version: wip/kvm_virsh
     depth: 1
@@ -71,7 +71,7 @@
       src: config.json.j2
       dest: "{{ vmcloak_conf }}/config/config.json"
       owner: "{{ cuckoo_user }}"
-      group: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}2"
       backup: yes
 
 - name: vmcloak database of vms
@@ -84,7 +84,7 @@
       src: "{{ role_path }}/files/repository.db"
       dest: "{{ vmcloak_conf }}/"
       owner: "{{ cuckoo_user }}"
-      group: "{{ cuckoo_user }}"
+      group: "{{ cuckoo_user }}2"
       backup: yes
 
 - name: copy vms ova files to the deployment server

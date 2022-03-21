@@ -2,11 +2,11 @@
 127.0.0.1
 
 [webservers]
-192.168.156.133
+10.2.24.5
 
 [local]
 local_machine ansible_connection=local ansible_host=localhost
 
 [webservers:vars]
-ansible_user=pwnslinger
+ansible_user=michael
 
