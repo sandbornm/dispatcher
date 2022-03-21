@@ -13,7 +13,7 @@
     filename: docker
 
 - name: install docker using apt
-  sudo: yes
+  become: yes
   package:
       name: "{{ item }}"
       state: present

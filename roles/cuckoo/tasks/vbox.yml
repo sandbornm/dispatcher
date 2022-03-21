@@ -13,7 +13,7 @@
     filename: virtualbox
 
 - name: install vbox using apt
-  sudo: yes
+  become: yes
   package:
       name: virtualbox
       state: present

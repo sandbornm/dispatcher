@@ -6,7 +6,7 @@
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: install package dependencies
-  sudo: yes
+  become: yes
   apt:
       name: "{{ cuckoo_req  }}"
       state: present
@@ -123,7 +123,7 @@
   become_user: "{{ cuckoo_user }}"
   shell: |
     set timeout 3m
-    "nohup {{ cuckoo_virtenv }}/bin/cuckoo rooter -g {{ cuckoo_user }} --sudo >/dev/null 2>&1 &"
+    "nohup {{ cuckoo_virtenv }}/bin/cuckoo rooter -g {{ cuckoo_user }} --become >/dev/null 2>&1 &"
   args:
    executable: "/bin/bash"
   async: 10

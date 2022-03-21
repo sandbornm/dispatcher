@@ -17,7 +17,7 @@
   register: installed_package
 
 - name: patch and install qemu
-  sudo: yes
+  become: yes
   block:
       - name: copy script to server
         copy: 
@@ -31,7 +31,7 @@
   when: installed_package is failed
 
 - name: install kvm/libvirt using apt
-  sudo: yes
+  become: yes
   apt:
       pkg:
         - libvirt-bin
@@ -107,7 +107,7 @@
       ignore_errors: yes
 
 - name: configure kvm iface
-  sudo: yes
+  become: yes
   block:
     - name: configuring dhcp kvm default iface
       replace:
