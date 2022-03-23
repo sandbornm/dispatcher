@@ -10,7 +10,7 @@
   become: true
   shell: |
     groupadd {{ pcap_group }}
-    usermod -aG {{ pcap_group }} {{ cuckoo_user }}
+    usermod -aG {{ pcap_group }} {{ cuckoo_user }}2
     chgrp {{ pcap_group }} {{ tcpdump_path }}
     setcap cap_net_raw,cap_net_admin=eip {{ tcpdump_path }}
   args:

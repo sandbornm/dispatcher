@@ -12,7 +12,7 @@ vm_backend: {
 default_backend: 'kvm'
 
 enable_volatility: false
-cuckoo_user: michael
+cuckoo_user: hive
 download_dir: ~/Downloads
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 vmcloak_conf: ~/.vmcloak

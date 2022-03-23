@@ -10,7 +10,7 @@
   apt:
       name: "{{ cuckoo_req }}"
       state: present
-      update_cache: yes
+      update_cache: no # yes
   register: pkg_status
   failed_when: pkg_status is failed
 
@@ -64,7 +64,7 @@
     src: cuckoo.conf.j2
     dest: "{{ cuckoo_cwd }}/conf/cuckoo.conf"
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}2"
+    group: "{{ cuckoo_user }}"
     backup: yes
 
 - name: show templating results
@@ -78,7 +78,7 @@
     regexp: '(\[mongodb\][^[]*)enabled = no'
     replace: '\1enabled = yes'
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}2"
+    group: "{{ cuckoo_user }}"
 
 - name: change routing options for cuckoo
   become_user: "{{ cuckoo_user }}"
@@ -87,7 +87,7 @@
     regexp: '(route = )[a-zA-Z]+\n'
     replace: '\1inetsim\n'
     owner: "{{ cuckoo_user }}"
-    group: "{{ cuckoo_user }}2"
+    group: "{{ cuckoo_user }}"
 
 - name: do facts module to get latest information
   setup:
@@ -114,7 +114,7 @@
   become_user: "{{ cuckoo_user }}"
   shell: |
    source {{ cuckoo_virtenv }}/bin/activate
-   cuckoo community
+   # cuckoo community
   args:
     executable: /bin/bash
 

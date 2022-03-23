@@ -11,7 +11,7 @@
   failed_when: pkg_status is failed
 
 - name: clone cuckoo repo wip/patch_aux branch on local
-  become: no
+  become: yes
   git:
     repo: https://github.com/sandbornm/cuckoo.git
     dest: "{{ download_dir }}/cuckoo"

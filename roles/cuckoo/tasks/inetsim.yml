@@ -10,7 +10,7 @@
       src: "{{ role_path }}/files/docker-compose.yml"
       dest: "{{ download_dir }}/inetsim"
       owner: "{{ cuckoo_user }}"
-      group: "{{ cuckoo_user }}2"
+      group: "{{ cuckoo_user }}"
       backup: yes
   - name: docker-compose up
     shell: |

@@ -56,7 +56,7 @@
 - name: pip | install python package dependencies
   become_user: "{{ cuckoo_user }}"
   pip:
-      name: libvirt-python
+      name: libvirt-python==5.10.0
       state: present
       virtualenv: "{{ cuckoo_virtenv }}"
       virtualenv_command: virtualenv
