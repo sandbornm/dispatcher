@@ -10,7 +10,7 @@
   apt:
       name: "{{ cuckoo_req }}"
       state: present
-      update_cache: no # yes
+      update_cache: yes # yes
   register: pkg_status
   failed_when: pkg_status is failed
 

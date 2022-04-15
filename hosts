@@ -2,7 +2,7 @@
 127.0.0.1
 
 [webservers]
-10.2.25.112
+10.0.2.15
 
 [local]
 local_machine ansible_connection=local ansible_host=localhost
