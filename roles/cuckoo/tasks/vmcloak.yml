@@ -26,18 +26,18 @@
   git:
     repo:  https://github.com/sandbornm/vmcloak.git
     dest: "{{ download_dir }}/vmcloak"
-    version: master
+    version: wip/vbox # master
     depth: 1
     accept_hostkey: yes
     force: yes
   when: vm_backend.virtualbox|bool
 
-- name: clone vmcloak repo wip/kvm_virsh branch on local
+- name: clone vmcloak repo dev/kvm branch on local
   become: no
   git:
     repo:  https://github.com/sandbornm/vmcloak.git
     dest: "{{ download_dir }}/vmcloak"
-    version: wip/kvm_virsh
+    version: dev/kvm #wip/kvm_virsh
     depth: 1
     accept_hostkey: yes
     force: yes

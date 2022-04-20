@@ -1,18 +1,18 @@
 vm_backend: {
    'virtualbox': false,
    'vmware': false,
-   'kvm': true,
+   'kvm': false,
    'qemu': false,
    'esx': false,
    'xenserver': false,
    'vsphere': false,
-   'avd': false
+   'avd': true
  }
 
 default_backend: 'kvm'
 
 enable_volatility: false
-cuckoo_user: hive
+cuckoo_user: michael
 download_dir: ~/Downloads
 cuckoo_virtenv: ~/.virtualenvs/cuckoo-venv
 vmcloak_conf: ~/.vmcloak
@@ -61,5 +61,5 @@ winxp_serial: HQYWT-4TF3C-PMX79-JFJWD-7G34B
 
 # VMWare workstation
 VMWare_URL: https://www.vmware.com/go/getWorkstation-linux
-VMWare_md5sum: 3212ed00463784ca8c67b5acd2c8d1cd
+VMWare_md5sum: 81e3cc66e5ce815457ae94ad52093ab3 #3212ed00463784ca8c67b5acd2c8d1cd
 VMWare_PATH: /usr/bin/vmrun

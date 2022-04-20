@@ -2,11 +2,11 @@
 127.0.0.1
 
 [webservers]
-10.0.2.15
+192.168.1.78
 
 [local]
 local_machine ansible_connection=local ansible_host=localhost
 
 [webservers:vars]
-ansible_user=hive
+ansible_user=michael
 

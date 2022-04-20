@@ -34,7 +34,7 @@
   become: yes
   apt:
       pkg:
-        - libvirt-bin
+#        - libvirt-bin
         - virtinst
         - virt-manager
         - libvirt-dev

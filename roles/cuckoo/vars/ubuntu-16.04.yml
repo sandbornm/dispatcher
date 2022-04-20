@@ -2,14 +2,14 @@
 
 cuckoo_req:
     - python
-    - python-pip
+#    - python-pip
     - python-dev
     - libffi-dev
     - libssl-dev
     - libxml2-dev
     - libxslt1-dev
     - mongodb
-    - python-virtualenv
+#    - python-virtualenv
     - python-setuptools
     - libjpeg-dev
     - zlib1g-dev
@@ -42,7 +42,7 @@ pip_pkg:
     - ipython
     - ipdb
     - pyopenssl
-    - m2crypto==0.24.0
+    - m2crypto==0.35.0
 
 cuckoo_kvm:
     - qemu-kvm

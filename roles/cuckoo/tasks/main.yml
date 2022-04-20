@@ -10,7 +10,8 @@
   apt:
       name: "{{ cuckoo_req }}"
       state: present
-      update_cache: yes # yes
+      update_cache: yes # no
+      #cache_valid_time: 432000 # todo might fix update issue?
   register: pkg_status
   failed_when: pkg_status is failed
 
