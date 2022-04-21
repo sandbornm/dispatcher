@@ -3,7 +3,7 @@
   roles:
     - local
 
-- hosts: webservers
+- hosts: local
   become: true
   roles:
-   - cuckoo
+    - cuckoo

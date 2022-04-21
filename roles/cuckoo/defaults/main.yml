@@ -1,12 +1,12 @@
 vm_backend: {
-   'virtualbox': false,
+   'virtualbox': true,
    'vmware': false,
    'kvm': false,
    'qemu': false,
    'esx': false,
    'xenserver': false,
    'vsphere': false,
-   'avd': true
+   'avd': false
  }
 
 default_backend: 'kvm'
