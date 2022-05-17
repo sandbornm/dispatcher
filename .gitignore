@@ -3,3 +3,4 @@ iso/*
 pafish/*
 cuckoo/*
 samples/100_bluepill/
+*.DS_Store*
