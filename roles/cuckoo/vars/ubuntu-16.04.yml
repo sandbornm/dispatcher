@@ -2,14 +2,14 @@
 
 cuckoo_req:
     - python
-    - python-pip
+    - pip
     - python-dev
     - libffi-dev
     - libssl-dev
     - libxml2-dev
     - libxslt1-dev
     - mongodb
-    - python-virtualenv
+    - virtualenv
     - python-setuptools
     - libjpeg-dev
     - zlib1g-dev

@@ -11,7 +11,7 @@ task_id = []
 
 def submit():
 
-    flist = glob.glob('./100_evasion/*/*.bin')
+    flist = glob.glob('./100_bluepill/*/*.bin')
     for f in flist:
         subprocess.call(['cuckoo', 'submit', '--timeout', '240', '--machine',
 				'win7x86_conf1', os.path.abspath(f)])
